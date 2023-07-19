@@ -2,6 +2,7 @@
 
 ## Quick start
 https://github.com/Xinyuan-LilyGO/TTGO-T-Display/tree/master
+https://s2ins.com/product/barcode-scanner-1d-2d-qr-code-module-mh-ttlusb/
 
 ## Pinout
 | Name       | V18    |

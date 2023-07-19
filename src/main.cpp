@@ -17,14 +17,30 @@ String input = "504-A";
 const int BUFFER_SIZE = 50;
 char buf[BUFFER_SIZE];
 
+String inputString = "";      // ตัวแปรสำหรับเก็บค่าจากตัวแสกนเนอร์
+String DataScanner = "";      //ตัวแปรสำหรับเก็บค่าในการประมวลผล
+bool stringComplete = false;  // ตัวแปรเช็คว่ารับข้อมูลครบแล้วหรือยัง
+
+void serialEvent() {
+  while (Serial.available()) {
+    // get the new byte:
+    char inChar = (char)Serial.read();
+    // add it to the inputString:
+    inputString += inChar;
+    // if the incoming character is a newline, set a flag so the main loop can
+    // do something about it:
+    if (inChar == '\n') {
+      stringComplete = true;
+      DataScanner = String(inputString);
+    }
+  }
+}
+
 void setup(void) {
   Serial.begin(115200);
   while (!Serial) ;
   gm65.begin(9600);
-  tft.init();
-  tft.setRotation(1);
-  tft.fillScreen(TFT_BLACK);
-
+  inputString.reserve(200);
 }
 void loop() {
   if (gm65.available()) //Checking if any data has been received
@@ -36,15 +52,9 @@ void loop() {
 
       if (readString.compareTo(input)> 0)
       {
-        tft.fillScreen(TFT_CASET);
-        tft.setTextColor(TFT_GREEN, TFT_BLACK);
-        // tft.setTextSize(1);
-        // tft.setCursor (8, 52);
-        tft.drawString(readString, 0, 0, 2);
+        
       }else{
-        tft.fillScreen(TFT_RED);
-        tft.setTextColor(TFT_WHITE, TFT_BLACK);
-        tft.drawString("no bar", 0, 0, 2);
+        
 
       }
       delay(1);
