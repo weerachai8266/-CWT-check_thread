@@ -40,7 +40,7 @@ void setup(void) {
   Serial.begin(115200);
   while (!Serial) ;
   gm65.begin(9600);
-  inputString.reserve(200);
+  inputString.reserve(200); // ประกาศตัวแปรสำหรับเก็บข้อความขนาด 200 ตัวอักษร
 }
 void loop() {
   if (gm65.available()) //Checking if any data has been received
