@@ -47,22 +47,23 @@ https://github.com/Xinyuan-LilyGO/TTGO-T-Display/tree/master
 - USB: Type-C
 
 ## Wi-Fi:
-Standard: FCC/CE-RED/IC/TELEC/KCC/SRRC/NCC
-Protocol: 802.11 b/g/n(802.11n，speed up to150Mbps)A-MPDU and A-MSDU polymerization，support 0.4μS Protection interval
-Frequency range: 2.4GHz~2.5GHz(2400M~2483.5M)
-Transmit Power: 22dBm
-Communication distance: 300m
-Bluetooth:
-Protocol: Meet Bluetooth v4.2BR/EDR and BLE standard
-Radio frequency: With -97dBm sensitivity NZIF receiver Class-1,Class-2&Class-3 emitter AFH
-Audio frequency: CVSD&SBC audio frequency
+- Standard: FCC/CE-RED/IC/TELEC/KCC/SRRC/NCC
+- Protocol: 802.11 b/g/n(802.11n，speed up to150Mbps)A-MPDU and A-MSDU polymerization，support 0.4μS Protection interval
+- Frequency range: 2.4GHz~2.5GHz(2400M~2483.5M)
+- Transmit Power: 22dBm
+- Communication distance: 300m
+
+## Bluetooth:
+- Protocol: Meet Bluetooth v4.2BR/EDR and BLE standard
+- Radio frequency: With -97dBm sensitivity NZIF receiver Class-1,Class-2&Class-3 emitter AFH
+- Audio frequency: CVSD&SBC audio frequency
 
 ## Software specification:
-Wi-Fi Mode: Station/SoftAP/SoftAP+Station/P2P
-Security mechanism: WPA/WPA2/WPA2-Enterprise/WPS
-Encryption Type: AES/RSA/ECC/SHA
-Firmware upgrade: UART download/OTA（Through network/host to download and write firmware）
-Software Development: Support cloud server development /SDK for user firmware development
-Networking protocol: IPv4、IPv6、SSL、TCP/UDP/HTTP/FTP/MQTT
-User Configuration: AT + Instruction set, cloud server, android/iOSapp
-OS: FreeRTOS
+- Wi-Fi Mode: Station/SoftAP/SoftAP+Station/P2P
+- Security mechanism: WPA/WPA2/WPA2-Enterprise/WPS
+- Encryption Type: AES/RSA/ECC/SHA
+- Firmware upgrade: UART download/OTA（Through network/host to download and write firmware）
+- Software Development: Support cloud server development /SDK for user firmware development
+- Networking protocol: IPv4、IPv6、SSL、TCP/UDP/HTTP/FTP/MQTT
+- User Configuration: AT + Instruction set, cloud server, android/iOSapp
+- OS: FreeRTOS
