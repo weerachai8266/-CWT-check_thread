@@ -22,29 +22,29 @@ https://github.com/Xinyuan-LilyGO/TTGO-T-Display/tree/master
 | ADC Power  | 14     |
 
 ## Hardware Specifications:
-Chipset: ESPRESSIF-ESP32 240MHz Xtensa® single-/dual-core 32-bit LX6 microprocessor
-FLASH Memory: QSPI flash 4MB
-SRAM: 520 KB SRAM
-Button: Reset
-USB to TTL IC: CP2104
-Modular interface: UART, SPI, SDIO, I2C, LED PWM, TV PWM, I2S, IRGPIO, ADC, capacitor touch sensor, DACLNA  pre-amplifier
-Display: IPS ST7789V 1.14 Inch
-Interface: SPI
-LCD type: IPS
-Controller: ST7789
-Resolution: 135(H)BGR x 240(V)
-Working Voltage: 2.7V-4.2V
-Working Current: About 60MA
-Sleep Current: about 120uA
-Working temperature range: -40℃ ~ +85℃
-Size&Weight: 51.52 x 25.04 x 8.54mm(7.81g)
+- Chipset: ESPRESSIF-ESP32 240MHz Xtensa® single-/dual-core 32-bit LX6 microprocessor
+- FLASH Memory: QSPI flash 4MB
+- SRAM: 520 KB SRAM
+- Button: Reset
+- USB to TTL IC: CP2104
+- Modular interface: UART, SPI, SDIO, I2C, LED PWM, TV PWM, I2S, IRGPIO, ADC, capacitor touch sensor, DACLNA  pre-amplifier
+- Display: IPS ST7789V 1.14 Inch
+- Interface: SPI
+- LCD type: IPS
+- Controller: ST7789
+- Resolution: 135(H)BGR x 240(V)
+- Working Voltage: 2.7V-4.2V
+- Working Current: About 60MA
+- Sleep Current: about 120uA
+- Working temperature range: -40℃ ~ +85℃
+- Size&Weight: 51.52 x 25.04 x 8.54mm(7.81g)
 
 ## Power Supply Specifications:
-Power Supply: USB 5V/1A
-Charging current: 500mA
-Battery: 3.7V lithium battery (Not included)
-JST Connector: 2Pin 1.25mm
-USB: Type-C
+- Power Supply: USB 5V/1A
+- Charging current: 500mA
+- Battery: 3.7V lithium battery (Not included)
+- JST Connector: 2Pin 1.25mm
+- USB: Type-C
 
 ## Wi-Fi:
 Standard: FCC/CE-RED/IC/TELEC/KCC/SRRC/NCC
