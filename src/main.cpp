@@ -13,7 +13,7 @@ int io6 = 25; // D25
 // DQ
 int alarm_on = 23; // alarm D23
 int cutoff_sewing = 22; // on-off motor D22
-int DO_SPARE = 21; // DO_SPARE D21
+int ready_lamp = 21; // DO_SPARE D21
 int trig1 = 15; // D15
 int trig2 = 5; // D5
 
@@ -66,7 +66,13 @@ String read_kanban(){
   return input; 
 }
 
-
+void lamp_blynk(int lamp, int t_delay)
+{
+  digitalWrite(lamp, on);
+  delay(t_delay);
+  digitalWrite(lamp, off);
+  delay(t_delay);
+}
 void setup(void) {
   Serial.begin(115200);
   while (!Serial) ;
@@ -82,7 +88,7 @@ void setup(void) {
   pinMode(trig2, OUTPUT);
   pinMode(alarm_on, OUTPUT);
   pinMode(cutoff_sewing, OUTPUT);
-  pinMode(DO_SPARE, OUTPUT);
+  pinMode(ready_lamp, OUTPUT);
   
   // digitalWrite(cutoff_sewing, on);
   // digitalWrite(alarm_on, off);
@@ -94,6 +100,7 @@ void loop() {
   digitalWrite(trig1, 1); // barcode off
   digitalWrite(cutoff_sewing, off); // barcode off 
   digitalWrite(alarm_on, off); // alarm off 
+  digitalWrite(ready_lamp, off); // ready_lamp off 
   
   while (digitalRead(io6)) // check thread on
   {
