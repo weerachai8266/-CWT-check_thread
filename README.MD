@@ -4,14 +4,13 @@
 - ใส่หลอดด้าย หันด้านบาร์โค๊ดให้ตรงกับลูกศร
 
 # เงื่อนไขการทำงาน
-|  ตรวจจับ | ผล | จักร |  Alarm  |
-|  -----------  |  ---------    |
-|  หลอดด้ายและกำบัง    |  ตรงกัน    |  ON  |  OFF  |
-|  หลอดด้ายและกำบัง    |  ไม่ตรงกัน  |  OFF  |  ON  |
-|  ไม่มีหลอดด้าย        |           |  OFF  |  OFF  |
-|  ไม่มีกำบัง             |           |  OFF  |	OFF  |
-|  มีหลอดด้าย ไม่มีกำบัง  |		OFF	|  OFF  |
-|  มีกำบัง ไม่มีหลอดด้าย  |	  OFF  |	OFF  |
+|   detect                               |  machinery   |   Lamp Alarm   |  Lamp Ready  |
+|   ----------------------------------   |  --------    |   ----------   |  ----------  |
+|   no thread, no card                   |  OFF         |   OFF          |  OFF         |
+|   with thread, no card                 |  OFF         |   OFF          |  BLINK       |
+|   no thread, have card                 |  OFF         |   OFF          |  BLINK       |
+|   The thread and the card do not match |	OFF         |	ON           |  OFF         |
+|   The thread and the card match        |  ON          |   OFF          |  ON          |
 
 # TTGO T-Display
 
