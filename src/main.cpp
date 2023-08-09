@@ -110,18 +110,22 @@ void loop() {
       digitalWrite(trig1, 1); // barcode off
       digitalWrite(cutoff_sewing, off); // barcode off 
       digitalWrite(alarm_on, off); // alarm off 
+      lamp_blynk(ready_lamp, 250);
+      break;
     }
     // Mode by pass
     while (read_kanban() == "bypass")
     {
       digitalWrite(trig1, 1); // barcode off
       digitalWrite(cutoff_sewing, on); // barcode on
+      digitalWrite(ready_lamp, on); // ready_lamp off 
       digitalWrite(alarm_on, off); // alarm off 
       if (!digitalRead(io1) && !digitalRead(io2) && !digitalRead(io3) || digitalRead(io1) && digitalRead(io2) && digitalRead(io3) || !digitalRead(io6)) // eject card and thread
         {
           read_card = "";
           read_barcode = "";
           digitalWrite(cutoff_sewing, off); // barcode off
+          digitalWrite(ready_lamp, off); // ready_lamp off 
           break;
         } 
     }
@@ -153,6 +157,7 @@ void loop() {
             digitalWrite(trig1, 1); // barcode off 
             digitalWrite(alarm_on, off); // alarm off 
             digitalWrite(cutoff_sewing, on); // sewing on 
+            digitalWrite(ready_lamp, on); // ready_lamp off 
             if (!digitalRead(io1) && !digitalRead(io2) && !digitalRead(io3) || digitalRead(io1) && digitalRead(io2) && digitalRead(io3)) // eject card
             {
               read_card = "";
@@ -171,6 +176,7 @@ void loop() {
             digitalWrite(trig1, 1); // barcode off
             digitalWrite(alarm_on, on); // alarm on 
             digitalWrite(cutoff_sewing, off); // sewing off 
+            digitalWrite(ready_lamp, off); // ready_lamp off
             if (!digitalRead(io1) && !digitalRead(io2) && !digitalRead(io3) || digitalRead(io1) && digitalRead(io2) && digitalRead(io3)) // eject card
             {
               read_card = "";
