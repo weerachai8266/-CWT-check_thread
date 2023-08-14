@@ -11,7 +11,7 @@ int io5 = 33; // D33
 int io6 = 25; // D25
 
 // DQ
-int alarm_on = 23; // alarm D23
+int alarm_ = 23; // alarm D23
 int cutoff_sewing = 22; // on-off motor D22
 int ready_lamp = 21; // DO_SPARE D21
 int trig1 = 15; // D15
@@ -72,6 +72,7 @@ void lamp_blynk(int lamp, int t_delay)
   delay(t_delay);
   digitalWrite(lamp, off);
   delay(t_delay);
+
 }
 void setup(void) {
   Serial.begin(115200);
@@ -86,20 +87,20 @@ void setup(void) {
 
   pinMode(trig1, OUTPUT);
   pinMode(trig2, OUTPUT);
-  pinMode(alarm_on, OUTPUT);
+  pinMode(alarm_, OUTPUT);
   pinMode(cutoff_sewing, OUTPUT);
   pinMode(ready_lamp, OUTPUT);
   
-  // digitalWrite(cutoff_sewing, on);
-  // digitalWrite(alarm_on, off);
-  // digitalWrite(trig1, 1);
+  digitalWrite(cutoff_sewing, off);
+  digitalWrite(alarm_, off);
+  digitalWrite(ready_lamp, off);
   // delay(1000);
 
 }
 void loop() {
   digitalWrite(trig1, 1); // barcode off
   digitalWrite(cutoff_sewing, off); // barcode off 
-  digitalWrite(alarm_on, off); // alarm off 
+  digitalWrite(alarm_, off); // alarm off 
   digitalWrite(ready_lamp, off); // ready_lamp off 
   
   while (digitalRead(io6)) // check thread on
@@ -109,8 +110,8 @@ void loop() {
     {
       digitalWrite(trig1, 1); // barcode off
       digitalWrite(cutoff_sewing, off); // barcode off 
-      digitalWrite(alarm_on, off); // alarm off 
-      lamp_blynk(ready_lamp, 250);
+      digitalWrite(alarm_, off); // alarm off 
+      lamp_blynk(ready_lamp, 500);
       break;
     }
     // Mode by pass
@@ -119,7 +120,7 @@ void loop() {
       digitalWrite(trig1, 1); // barcode off
       digitalWrite(cutoff_sewing, on); // barcode on
       digitalWrite(ready_lamp, on); // ready_lamp off 
-      digitalWrite(alarm_on, off); // alarm off 
+      digitalWrite(alarm_, off); // alarm off 
       if (!digitalRead(io1) && !digitalRead(io2) && !digitalRead(io3) || digitalRead(io1) && digitalRead(io2) && digitalRead(io3) || !digitalRead(io6)) // eject card and thread
         {
           read_card = "";
@@ -155,7 +156,7 @@ void loop() {
           while (digitalRead(io6))
           {
             digitalWrite(trig1, 1); // barcode off 
-            digitalWrite(alarm_on, off); // alarm off 
+            digitalWrite(alarm_, off); // alarm off 
             digitalWrite(cutoff_sewing, on); // sewing on 
             digitalWrite(ready_lamp, on); // ready_lamp off 
             if (!digitalRead(io1) && !digitalRead(io2) && !digitalRead(io3) || digitalRead(io1) && digitalRead(io2) && digitalRead(io3)) // eject card
@@ -174,7 +175,7 @@ void loop() {
           while (digitalRead(io6))
           {
             digitalWrite(trig1, 1); // barcode off
-            digitalWrite(alarm_on, on); // alarm on 
+            digitalWrite(alarm_, on); // alarm on 
             digitalWrite(cutoff_sewing, off); // sewing off 
             digitalWrite(ready_lamp, off); // ready_lamp off
             if (!digitalRead(io1) && !digitalRead(io2) && !digitalRead(io3) || digitalRead(io1) && digitalRead(io2) && digitalRead(io3)) // eject card
