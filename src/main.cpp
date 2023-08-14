@@ -41,15 +41,15 @@ String read_kanban(){
   
   if (!digitalRead(io1) && digitalRead(io2) && digitalRead(io3)) // 100
   {
-    input = "504-A\r";
+    input = "738-B-NO5\r";
   }
   else if (!digitalRead(io1) && !digitalRead(io2) && digitalRead(io3)) // 110
   {
-    input = "4519001660732\r";
+    input = "250-A-NO5\r";
   }
   else if (digitalRead(io1) && digitalRead(io2) && !digitalRead(io3)) // 001
   {
-    input = "4519001660735\r";
+    input = "001\r";
   }
   else if (digitalRead(io1) && !digitalRead(io2) && !digitalRead(io3)) // 011
   {
@@ -102,7 +102,9 @@ void loop() {
   digitalWrite(cutoff_sewing, off); // barcode off 
   digitalWrite(alarm_, off); // alarm off 
   digitalWrite(ready_lamp, off); // ready_lamp off 
-  
+  Serial.println(read_kanban());
+  delay(50);
+
   while (digitalRead(io6)) // check thread on
   {
     // if no card
