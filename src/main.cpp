@@ -45,11 +45,11 @@ String read_kanban(){
   }
   else if (!digitalRead(io1) && !digitalRead(io2) && digitalRead(io3)) // 110
   {
-    input = "250-A-NO5\r";
+    input = "205-A-NO5\r"; // 205-A
   }
   else if (digitalRead(io1) && digitalRead(io2) && !digitalRead(io3)) // 001
   {
-    input = "001\r";
+    input = "no : Thread No.. 5/1500 m.\n\nColor 205-A\r";
   }
   else if (digitalRead(io1) && !digitalRead(io2) && !digitalRead(io3)) // 011
   {
