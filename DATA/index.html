@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- <meta charset="UTF-8"> -->
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>setting</title>
+    <script>
+        function submitMessage() {
+          alert("Saved value");
+          setTimeout(function(){ document.location.reload(false); }, 500);   
+        }
+      </script>
+</head>
+<body>
+  <h3>setting thread name</h3>
+    <form action="/get" target="hidden-form">
+      <label >BarCode 1 (current value: %param_1%)</label>
+      <input type="text" name="param_1">
+      <input type="submit" value="Submit" onclick="submitMessage()">
+    </form>
+    <br>
+    <form action="/get" target="hidden-form">
+      <label for="">BarCode 2 (current value: %param_2%)</label>      
+      <input type="text" name="param_2">
+      <input type="submit" value="Submit" onclick="submitMessage()">
+    </form>
+    <br>
+    <form action="/get" target="hidden-form">
+      <label for="">BarCode 3 (current value: %param_3%)</label>
+      <input type="text" name="param_3">
+      <input type="submit" value="Submit" onclick="submitMessage()">
+    </form>
+    <br>
+    <form action="/get" target="hidden-form">
+      <label for="">BarCode 4 (current value: %param_4%)</label> 
+      <input type="text" name="param_4">
+      <input type="submit" value="Submit" onclick="submitMessage()">
+    </form>
+    <br>
+    <form action="/get" target="hidden-form">
+      <label for="">BarCode 5 (current value: %param_5%)</label>
+      <input type="text" name="param_5">
+      <input type="submit" value="Submit" onclick="submitMessage()">
+    </form>
+    <br>
+    <form action="/get" target="hidden-form">
+      <label for="">BarCode 6 (current value: %param_6%)</label>
+      <input type="text" name="param_6">
+      <input type="submit" value="Submit" onclick="submitMessage()">
+    </form>
+    <iframe style="display:none" name="hidden-form"></iframe>
+</body>
+</html>

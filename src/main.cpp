@@ -1,6 +1,12 @@
 #include <Arduino.h>
 #include <SoftwareSerial.h>
+#include <WiFi.h>
+#include <AsyncTCP.h>
+#include <ESPAsyncWebServer.h>
+#include <SPIFFS.h>
 
+AsyncWebServer server(8888);
+// WiFiServer server(8888);
 // DI
 int io1 = 13; // D13
 // int io2 = 12; // D12 do not use
@@ -31,8 +37,88 @@ bool on = 0;
 
 SoftwareSerial gm65(rx_1, tx_1); // RX, TX
 
+// wifi setting
+// REPLACE WITH YOUR NETWORK CREDENTIALS
+const char* ssid = "GM65001";
+const char* password = "357113800";
+
+// const char* ssid = "TrueGigatexFiber_2.4G_6f8";
+// const char* password = "0000099999";
+
+// IPAddress local_ip(192,168,10,100);
+// IPAddress gateway(192,168,10,1);
+// IPAddress subnet(255,255,255,0);
+
+const char* PARAM_STRING1 = "param_1"; // 100
+const char* PARAM_STRING2 = "param_2"; // 110
+const char* PARAM_STRING3 = "param_3"; // 001
+const char* PARAM_STRING4 = "param_4"; // 011
+const char* PARAM_STRING5 = "param_5"; // 010
+const char* PARAM_STRING6 = "param_6"; // 101
+
+void notFound(AsyncWebServerRequest *request) {
+  request->send(404, "text/plain", "Not found");
+}
+
+String readFile(fs::FS &fs, const char * path){
+  Serial.printf("Reading file: %s\r\n", path);
+  File file = fs.open(path, "r");
+  if(!file || file.isDirectory()){
+    Serial.println("- empty file or failed to open file");
+    return String();
+  }
+  Serial.println("- read from file:");
+  String fileContent;
+  while(file.available()){
+    fileContent+=String((char)file.read());
+  }
+  file.close();
+  Serial.println(fileContent);
+  return fileContent;
+}
+
+void writeFile(fs::FS &fs, const char * path, const char * message){
+  Serial.printf("Writing file: %s\r\n", path);
+  File file = fs.open(path, "w");
+  if(!file){
+    Serial.println("- failed to open file for writing");
+    return;
+  }
+  if(file.print(message)){
+    Serial.println("- file written");
+  } else {
+    Serial.println("- write failed");
+  }
+  file.close();
+}
+
+// Replaces placeholder with stored values
+String processor(const String& var){
+  //Serial.println(var);
+  if(var == "param_1"){
+    return readFile(SPIFFS, "/param_1.txt");
+  }
+  else if(var == "param_2"){
+    return readFile(SPIFFS, "/param_2.txt");
+  }
+  else if(var == "param_3"){
+    return readFile(SPIFFS, "/param_3.txt");
+  }
+  else if(var == "param_4"){
+    return readFile(SPIFFS, "/param_4.txt");
+  }
+  else if(var == "param_5"){
+    return readFile(SPIFFS, "/param_5.txt");
+  }
+  else if(var == "param_6"){
+    return readFile(SPIFFS, "/param_6.txt");
+  }
+  return String();
+}
+
 String read_kanban(){
   String input; 
+  String code;
   // while (!digitalRead(io1) && !digitalRead(io2) && !digitalRead(io3) or digitalRead(io1) && digitalRead(io2) && digitalRead(io3))
   // {
   //   digitalWrite(cutoff_sewing, off); // barcode off 
@@ -41,27 +127,33 @@ String read_kanban(){
   
   if (!digitalRead(io1) && digitalRead(io2) && digitalRead(io3)) // 100
   {
-    input = "738-B-NO5\r";
+    code = readFile(SPIFFS, "/param_1.txt");
+    input = code+"\r";
   }
   else if (!digitalRead(io1) && !digitalRead(io2) && digitalRead(io3)) // 110
   {
-    input = "205-A-NO5\r"; // 205-A
+    code = readFile(SPIFFS, "/param_2.txt");
+    input = code+"\r";
   }
   else if (digitalRead(io1) && digitalRead(io2) && !digitalRead(io3)) // 001
   {
-    input = "no : Thread No.. 5/1500 m.\n\nColor 205-A\r";
+    code = readFile(SPIFFS, "/param_3.txt");
+    input = code+"\r";
   }
   else if (digitalRead(io1) && !digitalRead(io2) && !digitalRead(io3)) // 011
   {
-    input = "011";
+    code = readFile(SPIFFS, "/param_4.txt");
+    input = code+"\r";
   }
   else if (digitalRead(io1) && !digitalRead(io2) && digitalRead(io3)) // 010
   {
-    input = "010";
+    code = readFile(SPIFFS, "/param_5.txt");
+    input = code+"\r";
   }
   else if (!digitalRead(io1) && digitalRead(io2) && !digitalRead(io3)) // 101
   {
-    input = "bypass";
+    code = readFile(SPIFFS, "/param_6.txt");
+    input = code+"\r";
   }
   return input; 
 }
@@ -76,12 +168,40 @@ void lamp_blynk(int lamp, int t_delay)
 }
 void setup(void) {
   Serial.begin(115200);
-  while (!Serial) ;
+  while (!Serial);
+
+  // Initialize SPIFFS
+  if(!SPIFFS.begin(true)){
+    Serial.println("An Error has occurred while mounting SPIFFS");
+    return;
+  }
+
+  // WiFi.mode(WIFI_STA);
+  // WiFi.begin(ssid, password);
+  // if (WiFi.waitForConnectResult() != WL_CONNECTED) {
+  //   Serial.println("WiFi Failed!");
+  //   return;
+  // }
+  // Serial.println();
+  // Serial.print("IP Address: ");
+  // Serial.println(WiFi.localIP());
+
+  // WiFi.mode(WIFI_AP);
+  // WiFi.softAP(ssid, password);
+  
+  // Serial.print("Setting AP (Access Point)…");
+  WiFi.softAP(ssid, password);
+  // WiFi.softAPConfig(local_ip, gateway, subnet);
+  IPAddress IP = WiFi.softAPIP();
+  // Serial.print("AP IP address: ");
+  Serial.println(IP);
+
   gm65.begin(9600);
   pinMode(io1, INPUT);
   pinMode(io2, INPUT);
   pinMode(io3, INPUT);
   pinMode(io4, INPUT);
+
   // pinMode(io5, INPUT);
   pinMode(io6, INPUT);
 
@@ -90,25 +210,83 @@ void setup(void) {
   pinMode(alarm_, OUTPUT);
   pinMode(cutoff_sewing, OUTPUT);
   pinMode(ready_lamp, OUTPUT);
+
+  // Send web page with input fields to client
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+  request->send(SPIFFS, "/index.html", String(), false, processor);
+  });
+  // server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+  // request->send(SPIFFS, "/index.html", String(), false, processor);
+  // });
+
+  // Send a GET request to <ESP_IP>/get?inputString=<inputMessage>
+  server.on("/get", HTTP_GET, [] (AsyncWebServerRequest *request) {
+    String inputMessage;
+    // GET inputString value on <ESP_IP>/get?inputString=<inputMessage>
+    if (request->hasParam(PARAM_STRING1)) {
+      inputMessage = request->getParam(PARAM_STRING1)->value();
+      writeFile(SPIFFS, "/param_1.txt", inputMessage.c_str());
+    }
+    else if (request->hasParam(PARAM_STRING2)) {
+      inputMessage = request->getParam(PARAM_STRING2)->value();
+      writeFile(SPIFFS, "/param_2.txt", inputMessage.c_str());
+    }
+    else if (request->hasParam(PARAM_STRING3)) {
+      inputMessage = request->getParam(PARAM_STRING3)->value();
+      writeFile(SPIFFS, "/param_3.txt", inputMessage.c_str());
+    }
+    else if (request->hasParam(PARAM_STRING4)) {
+      inputMessage = request->getParam(PARAM_STRING4)->value();
+      writeFile(SPIFFS, "/param_4.txt", inputMessage.c_str());
+    }
+    else if (request->hasParam(PARAM_STRING5)) {
+      inputMessage = request->getParam(PARAM_STRING5)->value();
+      writeFile(SPIFFS, "/param_5.txt", inputMessage.c_str());
+    }
+    else if (request->hasParam(PARAM_STRING6)) {
+      inputMessage = request->getParam(PARAM_STRING6)->value();
+      writeFile(SPIFFS, "/param_6.txt", inputMessage.c_str());
+    }
+    else {
+      inputMessage = "No message sent";
+    }
+    // Serial.println(inputMessage);
+    // request->send(200, "text/text", inputMessage);
+    request->send(SPIFFS, "/index.html", String(), false, processor);
+  });
+  server.onNotFound(notFound);
+  server.begin();
   
   digitalWrite(cutoff_sewing, off);
   digitalWrite(alarm_, off);
   digitalWrite(ready_lamp, off);
-  // delay(1000);
 
+  // Testing file updoad
+
+  // File file = SPIFFS.open("/param_2.txt");
+  // if(!file){
+  //   Serial.println("Failed to open file for reading");
+  //   return;
+  // }  
+  // Serial.println("File Content:");
+  // while(file.available()){
+  //   Serial.write(file.read());
+  // }
+  // file.close();
 }
 void loop() {
   digitalWrite(trig1, 1); // barcode off
   digitalWrite(cutoff_sewing, off); // barcode off 
   digitalWrite(alarm_, off); // alarm off 
   digitalWrite(ready_lamp, off); // ready_lamp off 
-  Serial.println(read_kanban());
+  // Serial.println(read_kanban());
   delay(50);
 
   while (digitalRead(io6)) // check thread on
   {
     // if no card
-    while (!digitalRead(io1) && !digitalRead(io2) && !digitalRead(io3) || digitalRead(io1) && digitalRead(io2) && digitalRead(io3)) // no card
+    while (!digitalRead(io1) && !digitalRead(io2) && !digitalRead(io3)) // no card
+    // while (!digitalRead(io1) && !digitalRead(io2) && !digitalRead(io3) || digitalRead(io1) && digitalRead(io2) && digitalRead(io3)) // no card
     {
       digitalWrite(trig1, 1); // barcode off
       digitalWrite(cutoff_sewing, off); // barcode off 
@@ -193,6 +371,3 @@ void loop() {
     } // end if Checking if any data has been received 
   } // end while check thread on
 } // end loop
-
-
-
