@@ -15,40 +15,48 @@
 <body>
   <h3>setting thread name</h3>
     <form action="/get" target="hidden-form">
-      <label >BarCode 1 (current value: %param_1%)</label>
+      <label for="">BarCode 1 (Current Value: </label>
+      <label for="" style="color:BLUE">%param_1%)</label>
       <input type="text" name="param_1">
       <input type="submit" value="Submit" onclick="submitMessage()">
     </form>
     <br>
     <form action="/get" target="hidden-form">
-      <label for="">BarCode 2 (current value: %param_2%)</label>      
+      <label for="">BarCode 2 (Current Value: </label>
+      <label for="" style="color:BLUE">%param_2%)</label>
       <input type="text" name="param_2">
       <input type="submit" value="Submit" onclick="submitMessage()">
     </form>
     <br>
     <form action="/get" target="hidden-form">
-      <label for="">BarCode 3 (current value: %param_3%)</label>
+      <label for="">BarCode 3 (Current Value: </label>
+      <label for="" style="color:BLUE">%param_3%)</label>
       <input type="text" name="param_3">
       <input type="submit" value="Submit" onclick="submitMessage()">
     </form>
     <br>
     <form action="/get" target="hidden-form">
-      <label for="">BarCode 4 (current value: %param_4%)</label> 
+      <label for="">BarCode 4 (Current Value: </label>
+      <label for="" style="color:BLUE">%param_4%)</label>
       <input type="text" name="param_4">
       <input type="submit" value="Submit" onclick="submitMessage()">
     </form>
     <br>
     <form action="/get" target="hidden-form">
-      <label for="">BarCode 5 (current value: %param_5%)</label>
+      <label for="">BarCode 5 (Current Value: </label>
+      <label for="" style="color:BLUE">%param_5%)</label>
       <input type="text" name="param_5">
       <input type="submit" value="Submit" onclick="submitMessage()">
     </form>
     <br>
     <form action="/get" target="hidden-form">
-      <label for="">BarCode 6 (current value: %param_6%)</label>
+      <label for="">BarCode 6 (Current Value: </label>
+      <label for="" style="color:BLUE">%param_6%)</label>
       <input type="text" name="param_6">
       <input type="submit" value="Submit" onclick="submitMessage()">
     </form>
+    <br>
+    <p>หมายเหตุ : หากกดป่ม submit โดยที่ช่องยังว่าง ค่าในโปรแกรมนั้นๆจะเป็นค่าว่าง</p>
     <iframe style="display:none" name="hidden-form"></iframe>
 </body>
 </html>

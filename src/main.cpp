@@ -176,26 +176,6 @@ void setup(void) {
     return;
   }
 
-  // WiFi.mode(WIFI_STA);
-  // WiFi.begin(ssid, password);
-  // if (WiFi.waitForConnectResult() != WL_CONNECTED) {
-  //   Serial.println("WiFi Failed!");
-  //   return;
-  // }
-  // Serial.println();
-  // Serial.print("IP Address: ");
-  // Serial.println(WiFi.localIP());
-
-  // WiFi.mode(WIFI_AP);
-  // WiFi.softAP(ssid, password);
-  
-  // Serial.print("Setting AP (Access Point)…");
-  WiFi.softAP(ssid, password);
-  // WiFi.softAPConfig(local_ip, gateway, subnet);
-  IPAddress IP = WiFi.softAPIP();
-  // Serial.print("AP IP address: ");
-  Serial.println(IP);
-
   gm65.begin(9600);
   pinMode(io1, INPUT);
   pinMode(io2, INPUT);
@@ -211,55 +191,77 @@ void setup(void) {
   pinMode(cutoff_sewing, OUTPUT);
   pinMode(ready_lamp, OUTPUT);
 
-  // Send web page with input fields to client
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-  request->send(SPIFFS, "/index.html", String(), false, processor);
-  });
-  // server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-  // request->send(SPIFFS, "/index.html", String(), false, processor);
-  // });
-
-  // Send a GET request to <ESP_IP>/get?inputString=<inputMessage>
-  server.on("/get", HTTP_GET, [] (AsyncWebServerRequest *request) {
-    String inputMessage;
-    // GET inputString value on <ESP_IP>/get?inputString=<inputMessage>
-    if (request->hasParam(PARAM_STRING1)) {
-      inputMessage = request->getParam(PARAM_STRING1)->value();
-      writeFile(SPIFFS, "/param_1.txt", inputMessage.c_str());
-    }
-    else if (request->hasParam(PARAM_STRING2)) {
-      inputMessage = request->getParam(PARAM_STRING2)->value();
-      writeFile(SPIFFS, "/param_2.txt", inputMessage.c_str());
-    }
-    else if (request->hasParam(PARAM_STRING3)) {
-      inputMessage = request->getParam(PARAM_STRING3)->value();
-      writeFile(SPIFFS, "/param_3.txt", inputMessage.c_str());
-    }
-    else if (request->hasParam(PARAM_STRING4)) {
-      inputMessage = request->getParam(PARAM_STRING4)->value();
-      writeFile(SPIFFS, "/param_4.txt", inputMessage.c_str());
-    }
-    else if (request->hasParam(PARAM_STRING5)) {
-      inputMessage = request->getParam(PARAM_STRING5)->value();
-      writeFile(SPIFFS, "/param_5.txt", inputMessage.c_str());
-    }
-    else if (request->hasParam(PARAM_STRING6)) {
-      inputMessage = request->getParam(PARAM_STRING6)->value();
-      writeFile(SPIFFS, "/param_6.txt", inputMessage.c_str());
-    }
-    else {
-      inputMessage = "No message sent";
-    }
-    // Serial.println(inputMessage);
-    // request->send(200, "text/text", inputMessage);
-    request->send(SPIFFS, "/index.html", String(), false, processor);
-  });
-  server.onNotFound(notFound);
-  server.begin();
-  
+  digitalWrite(trig1, off); 
   digitalWrite(cutoff_sewing, off);
   digitalWrite(alarm_, off);
   digitalWrite(ready_lamp, off);
+
+  // WiFi.mode(WIFI_STA);
+  // WiFi.begin(ssid, password);
+  // if (WiFi.waitForConnectResult() != WL_CONNECTED) {
+  //   Serial.println("WiFi Failed!");
+  //   return;
+  // }
+  // Serial.println();
+  // Serial.print("IP Address: ");
+  // Serial.println(WiFi.localIP());
+
+  // WiFi.mode(WIFI_AP);
+  // WiFi.softAP(ssid, password);
+  while (digitalRead(io1) && digitalRead(io2) && digitalRead(io3)) // 111
+  {
+    // Serial.print("Setting AP (Access Point)…");
+    WiFi.softAP(ssid, password);
+    // WiFi.softAPConfig(local_ip, gateway, subnet);
+    IPAddress IP = WiFi.softAPIP();
+    // Serial.print("AP IP address: ");
+    // Serial.println(IP);
+    
+    // Send web page with input fields to client
+    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(SPIFFS, "/index.html", String(), false, processor);
+    });
+
+    // Send a GET request to <ESP_IP>/get?inputString=<inputMessage>
+    server.on("/get", HTTP_GET, [] (AsyncWebServerRequest *request) {
+      String inputMessage;
+      // GET inputString value on <ESP_IP>/get?inputString=<inputMessage>
+      if (request->hasParam(PARAM_STRING1)) {
+        inputMessage = request->getParam(PARAM_STRING1)->value();
+        writeFile(SPIFFS, "/param_1.txt", inputMessage.c_str());
+      }
+      else if (request->hasParam(PARAM_STRING2)) {
+        inputMessage = request->getParam(PARAM_STRING2)->value();
+        writeFile(SPIFFS, "/param_2.txt", inputMessage.c_str());
+      }
+      else if (request->hasParam(PARAM_STRING3)) {
+        inputMessage = request->getParam(PARAM_STRING3)->value();
+        writeFile(SPIFFS, "/param_3.txt", inputMessage.c_str());
+      }
+      else if (request->hasParam(PARAM_STRING4)) {
+        inputMessage = request->getParam(PARAM_STRING4)->value();
+        writeFile(SPIFFS, "/param_4.txt", inputMessage.c_str());
+      }
+      else if (request->hasParam(PARAM_STRING5)) {
+        inputMessage = request->getParam(PARAM_STRING5)->value();
+        writeFile(SPIFFS, "/param_5.txt", inputMessage.c_str());
+      }
+      else if (request->hasParam(PARAM_STRING6)) {
+        inputMessage = request->getParam(PARAM_STRING6)->value();
+        writeFile(SPIFFS, "/param_6.txt", inputMessage.c_str());
+      }
+      else {
+        inputMessage = "No message sent";
+      }
+      // Serial.println(inputMessage);
+      // request->send(200, "text/text", inputMessage);
+      request->send(SPIFFS, "/index.html", String(), false, processor);
+    });
+    server.onNotFound(notFound);
+    server.begin();
+    
+    break;
+  }
 
   // Testing file updoad
 
@@ -275,8 +277,8 @@ void setup(void) {
   // file.close();
 }
 void loop() {
-  digitalWrite(trig1, 1); // barcode off
-  digitalWrite(cutoff_sewing, off); // barcode off 
+  digitalWrite(trig1, off); // barcode off
+  digitalWrite(cutoff_sewing, off); //  off 
   digitalWrite(alarm_, off); // alarm off 
   digitalWrite(ready_lamp, off); // ready_lamp off 
   // Serial.println(read_kanban());
