@@ -39,7 +39,7 @@ SoftwareSerial gm65(rx_1, tx_1); // RX, TX
 
 // wifi setting
 // REPLACE WITH YOUR NETWORK CREDENTIALS
-const char* ssid = "GM65001";
+const char* ssid = "GM65003";
 const char* password = "357113800";
 
 // const char* ssid = "TrueGigatexFiber_2.4G_6f8";
