@@ -39,7 +39,7 @@ SoftwareSerial gm65(rx_1, tx_1); // RX, TX
 
 // wifi setting
 // REPLACE WITH YOUR NETWORK CREDENTIALS
-const char* ssid = "GM65003";
+const char* ssid = "GM65001";
 const char* password = "357113800";
 
 // const char* ssid = "TrueGigatexFiber_2.4G_6f8";
@@ -297,7 +297,7 @@ void loop() {
       break;
     }
     // Mode by pass
-    while (read_kanban() == "bypass")
+    while (read_kanban() == "bypass\r")
     {
       digitalWrite(trig1, 1); // barcode off
       digitalWrite(cutoff_sewing, on); // barcode on
